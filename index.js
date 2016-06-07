@@ -10,6 +10,9 @@ module.exports = function (sails) {
         },
 
         reload: function (next) {
+            // Allow for calling reload() without a callback
+            next = next || function() {};
+
             var hook = this;
             var defaultConnection = sails.config.connections[sails.config.models.connection]
                 , migrate = sails.config.models.migrate
