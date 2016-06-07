@@ -33,19 +33,28 @@ module.exports = function (sails) {
                  */
                 setAssociationsAndScope(models, hook);
 
-                if (migrate === 'safe') {
+                /*
+                 * After reloading, emit a 'hook:sequelize:reloaded' event.
+                 * Prepare a function that emits the event, and returns the callback
+                 */
+                var reloadComplete = function() {
+                    sails.emit('hook:sequelize:reloaded');
                     return next();
+                };
+
+                if (migrate === 'safe') {
+                    return reloadComplete();
                 } else {
                     var forceSync = migrate === 'drop';
                     if (Object.keys(global['sequelize']).length == 1) {
                         Object.keys(global['sequelize']).forEach(function (sequelizeInstance) {
                             sequelizeInstance.sync({force: forceSync}).then(function () {
-                                return next();
+                                return reloadComplete();
                             });
                         });
                     } else {
                         global['sequelize'].sync({force: forceSync}).then(function () {
-                            return next();
+                            return reloadComplete();
                         });
                     }
                 }
