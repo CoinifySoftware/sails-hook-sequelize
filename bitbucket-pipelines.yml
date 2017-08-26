@@ -1,0 +1,22 @@
+image:
+  name: 941005513661.dkr.ecr.eu-west-1.amazonaws.com/pipelines:0.0.1
+  aws:
+    access-key: $AWS_ACCESS_KEY_ID
+    secret-key: $AWS_SECRET_ACCESS_KEY
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          - npm run build
+  branches:
+    master:
+      - step:
+          caches:
+            - node
+          script:
+            - npm run build
+            - publish
+
