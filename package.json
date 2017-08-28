@@ -4,7 +4,8 @@
   "description": "Sails.js hook to use sequelize ORM",
   "main": "index.js",
   "sails": {
-    "isHook": true
+    "isHook": true,
+    "hookName": "sequelize"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha test/bootstrap.test.js test/unit/**/*.test.js",
